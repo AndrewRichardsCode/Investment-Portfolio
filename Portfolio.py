@@ -28,18 +28,25 @@ class portfolio:
     
     
     def calcReturn(self):
-        simpleReturns = (self.rawData / self.rawData.shift(1)) - 1
-        annualReturns = simpleReturns.mean() * 250 
-        return np.dot(annualReturns, self.weights)
+        simpleDailyReturns = (self.rawData / self.rawData.shift(1)) - 1
+        #logDailyReturns = np.log(1 + self.rawData.pct_change())
+        annualAvgReturns = simpleDailyReturns.mean() * 250 
+        return np.dot(annualAvgReturns, self.weights)
         
-    def calcRisk():
-        return 0
+    def calcVariance(self):
+        simpleDailyReturns = (self.rawData / self.rawData.shift(1)) - 1
+        #logDailyReturns = np.log(1 + self.rawData.pct_change())
+        return np.dot(self.weights.T, np.dot(simpleDailyReturns.cov() * 250, self.weights))
+    
+    def calcVolatility(self):
+        return self.calcVariance() ** 0.5
     
     def printReturns(self):
         print('Annual Portfolio Return: ' + str(round(self.calcReturn()*100, 3)) + '%')
     
-    def printRisk():
-        return 0
+    def printRisk(self):
+        print(str(round(self.calcVariance()*100, 3)) + '% Portfolio Variance')
+        print(str(round(self.calcVolatility()*100, 3)) + '% Portfolio Volatility')
     
     def overview():
         return 0
