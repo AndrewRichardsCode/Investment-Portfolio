@@ -12,6 +12,5 @@ tickers = ['WIKI/MSFT', 'WIKI/T', 'WIKI/F', 'WIKI/GE']
 weights = [0.25, 0.25, 0.25, 0.25]
 
 portfolio1 = portfolio(tickers, weights)
-portfolio1.printReturns()
-portfolio1.printRisk()
+portfolio1.overview()
 

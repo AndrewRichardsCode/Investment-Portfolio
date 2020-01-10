@@ -48,8 +48,9 @@ class portfolio:
         print(str(round(self.calcVariance()*100, 3)) + '% Portfolio Variance')
         print(str(round(self.calcVolatility()*100, 3)) + '% Portfolio Volatility')
     
-    def overview():
-        return 0
+    def overview(self):
+        self.printReturns()
+        self.printRisk()
 
 
 
