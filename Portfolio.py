@@ -26,12 +26,19 @@ class portfolio:
             self.rawData[t] = quandl.get(t, start_date=self.start)['Adj. Close']
             
     
-    
     def calcReturn(self):
         simpleDailyReturns = (self.rawData / self.rawData.shift(1)) - 1
         #logDailyReturns = np.log(1 + self.rawData.pct_change())
         annualAvgReturns = simpleDailyReturns.mean() * 250 
         return np.dot(annualAvgReturns, self.weights)
+    
+    def calcAssetReturn(self):
+        simpleDailyReturns = (self.rawData / self.rawData.shift(1)) - 1
+        return simpleDailyReturns.mean() * 250
+    
+    def calcAssetVariance(self):
+        simpleDailyReturns = (self.rawData / self.rawData.shift(1)) - 1
+        return simpleDailyReturns.var() * 250
         
     def calcVariance(self):
         simpleDailyReturns = (self.rawData / self.rawData.shift(1)) - 1
@@ -40,6 +47,16 @@ class portfolio:
     
     def calcVolatility(self):
         return self.calcVariance() ** 0.5
+    
+    def divRisk(self):
+        assetVar = self.calcAssetVariance()
+        portVar = self.calcVariance()
+        for t in range(len(self.tickers)):
+            portVar -= (self.weights[t] ** 2 * assetVar[t])
+        return portVar
+    
+    def nonDivRisk(self):
+        return self.calcVariance() - self.divRisk()
     
     def printReturns(self):
         print('Annual Portfolio Return: ' + str(round(self.calcReturn()*100, 3)) + '%')

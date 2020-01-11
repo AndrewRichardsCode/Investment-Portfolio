@@ -14,3 +14,5 @@ weights = [0.25, 0.25, 0.25, 0.25]
 portfolio1 = portfolio(tickers, weights)
 portfolio1.overview()
 
+test = portfolio1.divRisk()
+
