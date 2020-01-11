@@ -59,11 +59,13 @@ class portfolio:
         return self.calcVariance() - self.divRisk()
     
     def printReturns(self):
-        print('Annual Portfolio Return: ' + str(round(self.calcReturn()*100, 3)) + '%')
+        print(str(round(self.calcReturn()*100, 3)) + '% Annual Portfolio Return')
     
     def printRisk(self):
         print(str(round(self.calcVariance()*100, 3)) + '% Portfolio Variance')
         print(str(round(self.calcVolatility()*100, 3)) + '% Portfolio Volatility')
+        print(str(round(self.divRisk()*100, 3)) + '% Diversifiable Risk')
+        print(str(round(self.nonDivRisk()*100, 3)) + '% Non-Diversifiable Risk')
     
     def overview(self):
         self.printReturns()
