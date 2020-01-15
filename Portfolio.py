@@ -16,7 +16,6 @@ class portfolio:
     tickers = []
     weights = []
     start = datetime(1995, 1, 1)
-    #end = datetime.datetime(2019, 1, 27)
     rawData = pd.DataFrame()
     
     def __init__(self, tickers, weights):
@@ -58,8 +57,13 @@ class portfolio:
     def nonDivRisk(self):
         return self.calcVariance() - self.divRisk()
     
-    def printReturns(self):
+    def printPortfolioReturn(self):
         print(str(round(self.calcReturn()*100, 3)) + '% Annual Portfolio Return')
+        
+    def printAssetReturns(self):
+        returns = round(self.calcAssetReturn()*100, 3)
+        print(returns.to_string())
+        
     
     def printRisk(self):
         print(str(round(self.calcVariance()*100, 3)) + '% Portfolio Variance')
@@ -68,7 +72,7 @@ class portfolio:
         print(str(round(self.nonDivRisk()*100, 3)) + '% Non-Diversifiable Risk')
     
     def overview(self):
-        self.printReturns()
+        self.printPortfolioReturn()
         self.printRisk()
 
 
