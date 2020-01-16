@@ -74,7 +74,7 @@ class portfolio:
         returns = round(self.calcAssetReturn()*100, 3)
         var = round(self.calcAssetVariance()*100, 3)
         std = round(self.calcAssetVolatility()*100, 3)
-        assetData = pd.DataFrame({'Return' : returns, 'Variance' : var, 'Volatility' : std})
+        assetData = pd.DataFrame({'Return' : returns, 'Variance' : var, 'Volatility' : std, 'Weight' : self.weights*100})
         pd.options.display.float_format = '{:}%'.format
         print(assetData.to_string())
         
