@@ -24,27 +24,31 @@ class portfolio:
         for t in self.tickers:
             self.rawData[t] = quandl.get(t, start_date=self.start)['Adj. Close']
             
-    
-    def calcReturn(self):
-        simpleDailyReturns = (self.rawData / self.rawData.shift(1)) - 1
-        #logDailyReturns = np.log(1 + self.rawData.pct_change())
-        annualAvgReturns = simpleDailyReturns.mean() * 250 
-        return np.dot(annualAvgReturns, self.weights)
-    
     def calcAssetReturn(self):
-        simpleDailyReturns = (self.rawData / self.rawData.shift(1)) - 1
-        return simpleDailyReturns.mean() * 250
+        #simpleDailyReturns = (self.rawData / self.rawData.shift(1)) - 1
+        logDailyReturns = np.log(1 + self.rawData.pct_change())
+        return logDailyReturns.mean() * 250
     
     def calcAssetVariance(self):
-        simpleDailyReturns = (self.rawData / self.rawData.shift(1)) - 1
-        return simpleDailyReturns.var() * 250
-        
-    def calcVariance(self):
-        simpleDailyReturns = (self.rawData / self.rawData.shift(1)) - 1
-        #logDailyReturns = np.log(1 + self.rawData.pct_change())
-        return np.dot(self.weights.T, np.dot(simpleDailyReturns.cov() * 250, self.weights))
+        #simpleDailyReturns = (self.rawData / self.rawData.shift(1)) - 1
+        logDailyReturns = np.log(1 + self.rawData.pct_change())
+        return logDailyReturns.var() * 250
     
-    def calcVolatility(self):
+    def calcAssetVolatility(self):#this is Standard Deviation
+        return self.calcAssetVariance() ** 0.5
+        
+    def calcReturn(self):
+        #simpleDailyReturns = (self.rawData / self.rawData.shift(1)) - 1
+        logDailyReturns = np.log(1 + self.rawData.pct_change())
+        annualAvgReturns = logDailyReturns.mean() * 250 
+        return np.dot(annualAvgReturns, self.weights)
+    
+    def calcVariance(self):
+        #simpleDailyReturns = (self.rawData / self.rawData.shift(1)) - 1
+        logDailyReturns = np.log(1 + self.rawData.pct_change())
+        return np.dot(self.weights.T, np.dot(logDailyReturns.cov() * 250, self.weights))
+    
+    def calcVolatility(self):#this is Standard Deviation
         return self.calcVariance() ** 0.5
     
     def divRisk(self):
@@ -57,39 +61,30 @@ class portfolio:
     def nonDivRisk(self):
         return self.calcVariance() - self.divRisk()
     
-    def printPortfolioReturn(self):
+    def printReturn(self):
         print('Portfolio Return:        ' + str(round(self.calcReturn()*100, 3)) + '%')
-        
-    def printAssetReturns(self):
-        returns = round(self.calcAssetReturn()*100, 3)
-        returns = pd.DataFrame(returns)
-        returns.columns = ['Return']
-        pd.options.display.float_format = '{:}%'.format
-        print(returns.to_string())
-        
-    def printAssetVariance(self):
-        var = round(self.calcAssetVariance()*100, 3)
-        var = pd.DataFrame(var)
-        var.columns = ['Variance']
-        pd.options.display.float_format = '{:}%'.format
-        print(var.to_string())
-        
     
     def printRisk(self):
-        print('Portfolio Variance:      ' + str(round(self.calcVariance()*100, 3)) + '%')
+        print('Portfolio Variance:      ' + str(round(self.calcVariance()*100, 3)))
         print('Portfolio Volatility:    ' + str(round(self.calcVolatility()*100, 3)) + '%')
         print('Diversifiable Risk:      ' + str(round(self.divRisk()*100, 3)) + '%')
         print('Non-Diversifiable Risk:  ' + str(round(self.nonDivRisk()*100, 3)) + '%')
+        
+    def printAssetData(self):
+        returns = round(self.calcAssetReturn()*100, 3)
+        var = round(self.calcAssetVariance()*100, 3)
+        std = round(self.calcAssetVolatility()*100, 3)
+        assetData = pd.DataFrame({'Return' : returns, 'Variance' : var, 'Volatility' : std})
+        pd.options.display.float_format = '{:}%'.format
+        print(assetData.to_string())
+        
+    #def plot(self):
     
     def overview(self):
-        self.printPortfolioReturn()
+        self.printReturn()
         self.printRisk()
         print()
-        self.printAssetReturns()
-        print()
-        self.printAssetVariance()
-
-
+        self.printAssetData()
 
 
 
