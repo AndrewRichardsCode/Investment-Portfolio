@@ -58,25 +58,36 @@ class portfolio:
         return self.calcVariance() - self.divRisk()
     
     def printPortfolioReturn(self):
-        print(str(round(self.calcReturn()*100, 3)) + '% Annual Portfolio Return')
+        print('Portfolio Return:        ' + str(round(self.calcReturn()*100, 3)) + '%')
         
     def printAssetReturns(self):
         returns = round(self.calcAssetReturn()*100, 3)
         returns = pd.DataFrame(returns)
-        returns.columns = ['Annual Return']
+        returns.columns = ['Return']
         pd.options.display.float_format = '{:}%'.format
         print(returns.to_string())
         
+    def printAssetVariance(self):
+        var = round(self.calcAssetVariance()*100, 3)
+        var = pd.DataFrame(var)
+        var.columns = ['Variance']
+        pd.options.display.float_format = '{:}%'.format
+        print(var.to_string())
+        
     
     def printRisk(self):
-        print(str(round(self.calcVariance()*100, 3)) + '% Portfolio Variance')
-        print(str(round(self.calcVolatility()*100, 3)) + '% Portfolio Volatility')
-        print(str(round(self.divRisk()*100, 3)) + '% Diversifiable Risk')
-        print(str(round(self.nonDivRisk()*100, 3)) + '% Non-Diversifiable Risk')
+        print('Portfolio Variance:      ' + str(round(self.calcVariance()*100, 3)) + '%')
+        print('Portfolio Volatility:    ' + str(round(self.calcVolatility()*100, 3)) + '%')
+        print('Diversifiable Risk:      ' + str(round(self.divRisk()*100, 3)) + '%')
+        print('Non-Diversifiable Risk:  ' + str(round(self.nonDivRisk()*100, 3)) + '%')
     
     def overview(self):
         self.printPortfolioReturn()
         self.printRisk()
+        print()
+        self.printAssetReturns()
+        print()
+        self.printAssetVariance()
 
 
 
