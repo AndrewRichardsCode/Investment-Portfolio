@@ -61,12 +61,12 @@ class portfolio:
     def nonDivRisk(self):
         return self.calcVariance() - self.divRisk()
     
-    def printReturn(self):
-        print('Portfolio Return:        ' + str(round(self.calcReturn()*100, 3)) + '%')
+    def printPortfolioReturn(self):
+        print('Annual Return:           ' + str(round(self.calcReturn()*100, 3)) + '%')
     
-    def printRisk(self):
-        print('Portfolio Variance:      ' + str(round(self.calcVariance()*100, 3)))
-        print('Portfolio Volatility:    ' + str(round(self.calcVolatility()*100, 3)) + '%')
+    def printPortfolioRisk(self):
+        print('Annual Variance:         ' + str(round(self.calcVariance()*100, 3)))
+        print('Annual Volatility:       ' + str(round(self.calcVolatility()*100, 3)) + '%')
         print('Diversifiable Risk:      ' + str(round(self.divRisk()*100, 3)) + '%')
         print('Non-Diversifiable Risk:  ' + str(round(self.nonDivRisk()*100, 3)) + '%')
         
@@ -81,9 +81,11 @@ class portfolio:
     #def plot(self):
     
     def overview(self):
-        self.printReturn()
-        self.printRisk()
+        print('------------Portfolio----------')
+        self.printPortfolioReturn()
+        self.printPortfolioRisk()
         print()
+        print('------------Assets-------------')
         self.printAssetData()
 
 
