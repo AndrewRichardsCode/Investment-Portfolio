@@ -62,6 +62,9 @@ class portfolio:
         
     def printAssetReturns(self):
         returns = round(self.calcAssetReturn()*100, 3)
+        returns = pd.DataFrame(returns)
+        returns.columns = ['Annual Return']
+        pd.options.display.float_format = '{:}%'.format
         print(returns.to_string())
         
     
