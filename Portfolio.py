@@ -78,7 +78,8 @@ class portfolio:
         pd.options.display.float_format = '{:}%'.format
         print(assetData.to_string())
         
-    #def plot(self):
+    def plotPrice(self):
+        (self.rawData / self.rawData.iloc[0] * 100).plot(figsize = (15,6));
     
     def overview(self):
         print('------------Portfolio----------')
