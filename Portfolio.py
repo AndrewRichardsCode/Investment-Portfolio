@@ -51,6 +51,10 @@ class portfolio:
     def calcVolatility(self):#this is Standard Deviation
         return self.calcVariance() ** 0.5
     
+    def calcCorrelation(self):
+        logDailyReturns = np.log(1 + self.rawData.pct_change())
+        return logDailyReturns.corr() * 100
+    
     def divRisk(self):
         assetVar = self.calcAssetVariance()
         portVar = self.calcVariance()
@@ -77,6 +81,10 @@ class portfolio:
         assetData = pd.DataFrame({'Return' : returns, 'Variance' : var, 'Volatility' : std, 'Weight' : self.weights*100})
         pd.options.display.float_format = '{:}%'.format
         print(assetData.to_string())
+    
+    def printAssetCorrelation(self):
+        pd.options.display.float_format = '{:}%'.format
+        print(round(self.calcCorrelation(), 3).to_string())
         
     def plotPrice(self):
         (self.rawData / self.rawData.iloc[0] * 100).plot(figsize = (15,6));
@@ -88,6 +96,9 @@ class portfolio:
         print()
         print('------------Assets-------------')
         self.printAssetData()
+        print()
+        print('-----------Correlation---------')
+        self.printAssetCorrelation()
 
 
 
